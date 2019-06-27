@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Database">
+
+    <EditText
+        android:id="@+id/id"
+        android:layout_width="269dp"
+        android:layout_height="60dp"
+        android:ems="10"
+        android:hint="ID"
+        android:inputType="number"
+        android:translationY="50sp"
+        android:translationX="50sp"
+        />
+
+    <EditText
+        android:id="@+id/name"
+        android:layout_width="271dp"
+        android:layout_height="59dp"
+        android:ems="10"
+        android:hint="Name"
+        android:inputType="textPersonName"
+        android:translationX="50sp"
+        android:translationY="100sp" />
+
+    <EditText
+        android:id="@+id/course"
+        android:layout_width="271dp"
+        android:layout_height="59dp"
+        android:ems="10"
+        android:hint="Course"
+        android:inputType="textPersonName"
+        android:translationY="150sp"
+        android:translationX="50sp"/>
+
+    <EditText
+        android:id="@+id/semester"
+        android:layout_width="271dp"
+        android:layout_height="59dp"
+        android:ems="10"
+        android:hint="Semester"
+        android:inputType="number"
+        android:translationY="200sp"
+        android:translationX="50sp"/>
+
+    <EditText
+        android:id="@+id/city"
+        android:layout_width="271dp"
+        android:layout_height="59dp"
+        android:ems="10"
+        android:hint="City"
+        android:inputType="textPersonName"
+        android:translationY="250sp"
+        android:translationX="50sp"/>
+
+    <Button
+        android:id="@+id/insert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="Insert"
+        android:translationX="50sp"
+        android:translationY="350sp" />
+    <Button
+        android:id="@+id/update"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Upadate"
+        android:translationY="350sp"
+        android:translationX="150sp"
+        />
+    <Button
+        android:id="@+id/delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete"
+        android:translationY="350sp"
+        android:translationX="250sp"
+        />
+</RelativeLayout>
