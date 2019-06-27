@@ -1,5 +1,6 @@
 package com.example.database;
 
+import android.content.Intent;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,20 +8,28 @@ import android.util.Log;
 import android.view.View;
 import android.widget.*;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
-import javax.net.ssl.HttpsURLConnection;
+
 
 public class Database extends AppCompatActivity {
 
     EditText id,name,course,semester,city;
-    Button insert,update,delete;
+    Button insert,update,delete,select;
+
+    int stdid[],stdsemester[];
+    String stdname[],stdcourse[],stdcity[];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +61,22 @@ public class Database extends AppCompatActivity {
             }
         });
 
+        select.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectData();
+               Intent intent=new Intent(getApplicationContext(),Select.class);
+
+               intent.putExtra("id",stdid);
+                intent.putExtra("name",stdname);
+                intent.putExtra("course",stdcourse);
+                intent.putExtra("semester",stdsemester);
+                intent.putExtra("city",stdcity);
+
+               startActivity(intent);
+            }
+        });
+
 
 
     }
@@ -67,6 +92,7 @@ public class Database extends AppCompatActivity {
         insert=(Button)findViewById(R.id.insert);
         update=(Button)findViewById(R.id.update);
         delete=(Button)findViewById(R.id.delete);
+        select=findViewById(R.id.select);
 
     }
 
@@ -145,7 +171,7 @@ public class Database extends AppCompatActivity {
                     "&"+URLEncoder.encode("course","UTF-8")+"="+URLEncoder.encode(course.getText().toString(),"UTF-8")+
                     "&"+URLEncoder.encode("semester","UTF-8")+"="+URLEncoder.encode(semester.getText().toString(),"UTF-8")+
                     "&"+URLEncoder.encode("city","UTF-8")+"="+URLEncoder.encode(city.getText().toString(),"UTF-8")+
-                    "&"+URLEncoder.encode("submit","UTF-8")+"="+URLEncoder.encode("insert","UTF-8");
+                    "&"+URLEncoder.encode("submit","UTF-8")+"="+URLEncoder.encode("update","UTF-8");
 
             bufferedWriter.write(data);
             bufferedWriter.close();
@@ -178,7 +204,7 @@ public class Database extends AppCompatActivity {
 
             String data= URLEncoder.encode("id","UTF-8")+"="+URLEncoder.encode(id.getText().toString(),"UTF-8")+
 
-                    "&"+URLEncoder.encode("submit","UTF-8")+"="+URLEncoder.encode("insert","UTF-8");
+                    "&"+URLEncoder.encode("submit","UTF-8")+"="+URLEncoder.encode("delete","UTF-8");
 
             bufferedWriter.write(data);
             bufferedWriter.close();
@@ -193,6 +219,67 @@ public class Database extends AppCompatActivity {
         }catch (Exception e)
         {
             Log.d("Data",e.toString());
+        }
+    }
+
+
+    public void selectData()
+    {
+        StringBuilder stringBuilder=new StringBuilder();
+        String line="";
+
+        try{
+            HttpURLConnection conn=connect();
+            conn.setRequestMethod("POST");
+            conn.setDoInput(true);
+
+            InputStream inputStream=conn.getInputStream();
+            InputStreamReader inputStreamReader=new InputStreamReader(inputStream,"UTF-8");
+            BufferedReader bufferedReader=new BufferedReader(inputStreamReader);
+
+            while((line=bufferedReader.readLine())!=null)
+            {
+                stringBuilder.append(line+"\n");
+
+
+            }
+
+            String data=stringBuilder.toString().trim();
+
+            Log.d("data:",stringBuilder.toString());
+
+            JSONArray jsonArray=new JSONArray(data);
+
+
+
+            int length=jsonArray.length();
+
+            stdid=new int[length];
+            stdsemester=new int[length];
+
+            stdname=new String[length];
+            stdcourse=new String[length];
+            stdcity=new String[length];
+
+            JSONObject jsonObject=null;
+
+            for(int i=0;i<length;i++)
+            {
+                jsonObject=jsonArray.getJSONObject(i);
+
+                stdid[i]=jsonObject.getInt("id");
+                stdname[i]=jsonObject.getString("name");
+                stdcourse[i]=jsonObject.getString("course");
+                stdsemester[i]=jsonObject.getInt("semester");
+                stdcity[i]=jsonObject.getString("city");
+
+            }
+
+               Log.d("id",stdid.toString());
+
+        }catch (Exception e)
+        {
+                Log.d("Data",e.toString());
         }
     }
 }
